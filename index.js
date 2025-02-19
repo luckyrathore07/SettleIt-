@@ -13,8 +13,8 @@ app.use(cookieParser());
 
 const PORT = 4000;
 
-// app.use("/api/v1/auth", auth);
-// app.use("/api/v1/complaint", complaint);
+app.use("/api/v1/auth", auth);
+app.use("/api/v1/complaint", complaint);
 app.get("/", (req, res) => {
   res.send("Hello, World!");
 });

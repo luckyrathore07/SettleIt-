@@ -9,6 +9,6 @@ const {
 
 router.post("/createComplaint", createComplaint);
 router.get("/getComplaints", getComplaints);
-router.get("/resolveComplaint", resolveComplaint);
+router.post("/resolveComplaint", resolveComplaint);
 
 module.exports = router;
