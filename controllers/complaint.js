@@ -11,7 +11,7 @@ exports.createComplaint = async (req, res) => {
     }
 
     const newComplaint = new Complaint({
-      userId: "67b57ad5202b37067a9bab01",
+      userId: req.user.id,
       title,
       description,
       complaintType,
@@ -32,7 +32,7 @@ exports.createComplaint = async (req, res) => {
 
 exports.getComplaints = async (req, res) => {
   try {
-    const complaints = await Complaint.find().sort({ createdAt: -1 });
+    const complaints = await Complaint.find({ status: true });  
     res.status(200).json(complaints);
   } catch (error) {
     res.status(500).json({ message: "Error fetching complaints" });
@@ -59,7 +59,7 @@ exports.vote = async (req,res) => {
     const complaintId = req.query.id;
     const upvote = req.query.like;
     const downVote = req.query.disLike;
-    const userId = "67b57ad5202b37067a9bab01"
+    const userId = req.user.id
     const complaint = await Complaint.findById(complaintId);
     //console.log(complaintId,like,disLike,userId);
     if (!complaint)
@@ -93,6 +93,20 @@ exports.vote = async (req,res) => {
     });
 
   } catch(error){
-    res.status(500).json({ message: "Error when voting complaint" });
+    res.status(500).json({ 
+      message: "Error when voting complaint" ,
+      error:error.message});
   }
 }
+
+exports.fetchMostUpvotedComplaints = async (req, res) => {
+  try {
+    const topComplaints = await Complaint.find()
+      .sort({ like: -1 })  
+      .limit(10);  
+
+    res.status(200).json(topComplaints);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching top complaints" });
+  }
+};

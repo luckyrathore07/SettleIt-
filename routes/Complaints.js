@@ -5,15 +5,17 @@ const {
   createComplaint,
   getComplaints,
   resolveComplaint,
-  vote
+  vote,
+  fetchMostUpvotedComplaints
 } = require("../controllers/complaint");
 const {
   authMiddleware
 } = require("../middlewares/auth")
 
-router.post("/createComplaint", createComplaint);
+router.post("/createComplaint",authMiddleware, createComplaint);
 router.get("/getComplaints",authMiddleware, getComplaints);
-router.post("/resolveComplaint", resolveComplaint);
-router.post("/vote", vote);
+router.post("/resolveComplaint",authMiddleware, resolveComplaint);
+router.post("/vote",authMiddleware, vote);
+router.get("/fetchMostUpvotedComplaints",authMiddleware, fetchMostUpvotedComplaints);
 
 module.exports = router;
