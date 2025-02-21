@@ -6,7 +6,8 @@ const {
   getComplaints,
   resolveComplaint,
   vote,
-  fetchMostUpvotedComplaints
+  fetchMostUpvotedComplaints,
+  fetchAllComplaints
 } = require("../controllers/complaint");
 const {
   authMiddleware
@@ -16,6 +17,6 @@ router.post("/createComplaint",authMiddleware, createComplaint);
 router.get("/getComplaints", getComplaints);
 router.post("/resolveComplaint",authMiddleware, resolveComplaint);
 router.post("/vote",authMiddleware, vote);
-router.get("/fetchMostUpvotedComplaints",authMiddleware, fetchMostUpvotedComplaints);
-
+router.get("/fetchMostUpvotedComplaints", fetchMostUpvotedComplaints);
+router.get("/fetchAllComplaints", fetchAllComplaints);
 module.exports = router;

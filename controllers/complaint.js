@@ -114,3 +114,13 @@ exports.fetchMostUpvotedComplaints = async (req, res) => {
     res.status(500).json({ message: "Error fetching top complaints" });
   }
 };
+
+exports.fetchAllComplaints = async (req, res) => {
+  try {
+    const topComplaints = await Complaint.find() 
+
+    res.status(200).json(topComplaints);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching top complaints" });
+  }
+};
