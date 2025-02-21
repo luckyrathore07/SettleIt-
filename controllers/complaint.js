@@ -105,15 +105,26 @@ exports.vote = async (req,res) => {
 
 exports.fetchMostUpvotedComplaints = async (req, res) => {
   try {
-    const topComplaints = await Complaint.find()
-      .sort({ like: -1 })  
-      .limit(10);  
+    const topComplaints = await Complaint.aggregate([
+      {
+        $addFields: { likeCount: { $size: "$like" } },  
+      },
+      {
+        $sort: { likeCount: -1 },  
+      },
+      {
+        $limit: 10,
+      }
+    ]);
 
     res.status(200).json(topComplaints);
   } catch (error) {
     res.status(500).json({ message: "Error fetching top complaints" });
   }
 };
+
+ 
+
 
 exports.fetchAllComplaints = async (req, res) => {
   try {

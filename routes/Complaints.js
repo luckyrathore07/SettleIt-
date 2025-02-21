@@ -19,4 +19,5 @@ router.post("/resolveComplaint",authMiddleware, resolveComplaint);
 router.post("/vote",authMiddleware, vote);
 router.get("/fetchMostUpvotedComplaints", fetchMostUpvotedComplaints);
 router.get("/fetchAllComplaints", fetchAllComplaints);
+ 
 module.exports = router;

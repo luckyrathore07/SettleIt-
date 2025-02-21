@@ -8,13 +8,7 @@ require("dotenv").config();
 database.connect();
 const app = express();
 app.use(express.json());
-const allowedOrigins = ["https://settleit.onrender.com"]; 
-app.use(
-  cors({
-    origin: allowedOrigins,
-    credentials: true,  
-  })
-);
+app.use(cors());
 app.use(cookieParser());
 
 const PORT = 4000;
