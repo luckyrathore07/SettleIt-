@@ -24,7 +24,10 @@ exports.createComplaint = async (req, res) => {
 
     res
       .status(201)
-      .json({ message: "Complaint created successfully", newComplaint });
+      .json({
+        success : true,
+         message: "Complaint created successfully", 
+         newComplaint });
   } catch (error) {
     res.status(500).json({ message: "Error creating complaint" });
   }
@@ -41,14 +44,17 @@ exports.getComplaints = async (req, res) => {
 
 exports.resolveComplaint = async (req, res) => {
   try {
-    const complaint = await Complaint.findById(req.query.id);
+    const complaint = await Complaint.findById(req.body.id);
     console.log(req.query.id);
     if (!complaint)
       return res.status(404).json({ message: "Complaint not found" });
 
     complaint.status = false;
     await complaint.save();
-    res.status(200).json({ message: "Complaint marked as resolved" });
+    res.status(200).json({ 
+      success : true,
+      message: "Complaint marked as resolved"
+     });
   } catch (error) {
     res.status(500).json({ message: "Error resolving complaint" });
   }
@@ -56,32 +62,30 @@ exports.resolveComplaint = async (req, res) => {
 
 exports.vote = async (req,res) => {
   try{
-    const complaintId = req.query.id;
-    const upvote = req.query.like;
-    const downVote = req.query.disLike;
+    const complaintId = req.body.id;
+    const upvote = req.body.upVote;
+    const downVote = req.body.downVote;
     const userId = req.user.id
     const complaint = await Complaint.findById(complaintId);
-    //console.log(complaintId,like,disLike,userId);
+    //console.log("backend ->",complaintId,like,disLike,userId);
     if (!complaint)
       return res.status(404).json({ message: "Complaint not found" });
-     console.log("hello1")
-    if(upvote == "false" && downVote == "false"){
+    if(upvote == false && downVote == false){
       complaint.like = complaint.like.filter((user) => user != userId );
       complaint.dislike = complaint.dislike.filter((user) => user != userId );
-      //console.log("hello in 1 try")
+     console.log("hello in 1 try")
     }
-
-    else if(upvote == "true" && downVote == "false"){
+    else if(upvote == true && downVote == false){
        complaint.like.push(userId );
       complaint.dislike = complaint.dislike.filter((user) => user != userId );
-      //console.log("hello2")
+       console.log("hello in 2 try")
     }
-    else if(upvote == "false" && downVote == "true"){
+    else if(upvote == false && downVote == true){
       complaint.like = complaint.like.filter((user) => user != userId );
        complaint.dislike.push(userId );
       console.log("hello in 3 try")
     }
-    console.log(complaint)
+    // console.log(complaint)
     
     await complaint.save();
     console.log("hello after save")
